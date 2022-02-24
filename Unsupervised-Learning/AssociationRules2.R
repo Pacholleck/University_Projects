@@ -1,5 +1,9 @@
 #install.packages("arules")
+#install.packages("RColorBrewer")
 library(arules)
+library(arulesViz)
+library(RColorBrewer)
+
 trans1<-read.transactions("C:/Users/duzzi/Documents/University_Projects/Unsupervised-Learning/data/survey_cleaned.csv", format="basket", sep=",", skip=0, header=TRUE) # reading the file as transactions
 trans1
 inspect(trans1)
@@ -26,8 +30,16 @@ inspect(head(rules.notreatment.byconf))
 
 plot(rules.notreatment.byconf)
 
-# What leads to work interference?
+# What is associated with often having work interference because of mental health conditions??
 rules.interference<-apriori(data=trans1, parameter=list(supp=0.05, conf=0.08), appearance=list(default="lhs", rhs="work_interfere Often"), control=list(verbose=F))
+rules.interference.byconf<-sort(rules.interference, by="confidence", decreasing=TRUE)
+inspect(head(rules.interference.byconf))
+
+plot(rules.interference.byconf)
+plot(rules.interference.byconf, method= "graph")
+
+# What is associated with never having work interference because of mental health conditions??
+rules.interference<-apriori(data=trans1, parameter=list(supp=0.05, conf=0.08), appearance=list(default="lhs", rhs="work_interfere Never"), control=list(verbose=F))
 rules.interference.byconf<-sort(rules.interference, by="confidence", decreasing=TRUE)
 inspect(head(rules.interference.byconf))
 
@@ -49,9 +61,6 @@ rules.leave<-apriori(data=trans1, parameter=list(supp=0.05, conf=0.08), appearan
 rules.leave.byconf<-sort(rules.leave, by="confidence", decreasing=TRUE)
 inspect(head(rules.leave.byconf))
 
-library(arulesViz)
-install.packages("RColorBrewer")
-library(RColorBrewer)
 
 # using itemFrequencyPlot() function
 arules::itemFrequencyPlot(trans1, topN = 20,
