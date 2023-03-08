@@ -1,2 +1,2 @@
-# University_Projects
-This repository contains several projects for my data science studies.
+# Unsupervised Learning
+This repository contains a project using multiple methods of unsupervised learning for my data science studies.
